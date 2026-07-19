@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Web Organ — C++ / WebAssembly</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <header>
+      <div class="title-row">
+        <div>
+          <p class="eyebrow">C++ → WebAssembly → AudioWorklet</p>
+          <h1>Web Organ</h1>
+        </div>
+        <div class="engine-badge" aria-label="音源方式">
+          <strong>C++ Engine</strong>
+          <span>WebAssembly</span>
+        </div>
+      </div>
+      <p class="description">
+        「Enable Audio」を押した後、画面の鍵盤またはPCキーボードで演奏できます。
+        音源計算はJavaScriptではなく、WebAssembly化したC++が担当します。
+      </p>
+    </header>
+
+    <section class="controls" aria-label="音源操作">
+      <button id="enableAudio" class="primary">Enable Audio</button>
+
+      <label>
+        Master volume
+        <input id="masterVolume" type="range" min="0" max="1" step="0.01" value="0.28">
+      </label>
+
+      <label>
+        Registration
+        <select id="registration">
+          <option value="0">Principal</option>
+          <option value="1">Flute</option>
+          <option value="2">Reed</option>
+        </select>
+      </label>
+
+      <button id="panic">All Notes Off</button>
+      <span id="status" role="status">WASM is not loaded.</span>
+    </section>
+
+    <section class="signal-flow" aria-label="信号処理の流れ">
+      <span>Keyboard UI</span>
+      <span class="arrow">→</span>
+      <span>app.js</span>
+      <span class="arrow">→</span>
+      <span>AudioWorklet</span>
+      <span class="arrow">→</span>
+      <strong>C++ / WASM</strong>
+      <span class="arrow">→</span>
+      <span>Speaker</span>
+    </section>
+
+    <section class="keyboard-panel">
+      <div id="keyboard" class="keyboard" aria-label="オルガン鍵盤"></div>
+    </section>
+
+    <section class="help">
+      <h2>PC keyboard</h2>
+      <p>白鍵: A S D F G H J K ／ 黒鍵: W E T Y U</p>
+      <p>
+        C++ソースは <code>organ_engine.cpp</code>、生成済みWebAssemblyは
+        <code>organ_engine.wasm</code> です。
+      </p>
+    </section>
+  </main>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
